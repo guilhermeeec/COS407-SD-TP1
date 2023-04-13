@@ -1,0 +1,18 @@
+Para gerar o signal_tx:
+$ gcc -c signal_tx.c -o signal_tx.o
+$ gcc signal_tx.o -o signal_tx
+
+Para testar o signal_tx, digite:
+$ sleep 1000 &
+
+Com isso, um processo irá ser executado em segundo plano e seu pid será impresso.
+Para verificar o processo, digite
+$ ps aux | grep -i <pid retornado>
+
+Digite:
+$ ./signal_tx <pid impresso> 15
+
+O sinal 15 é chamado de SIGTERM, e mata o processo. Execute novamente:
+$ ps aux | grep -i <pid retornado>
+
+O processo terá sido terminado.
