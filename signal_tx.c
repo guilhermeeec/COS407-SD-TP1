@@ -14,6 +14,7 @@ int pega_arg_pid(pid_t* p_pid, char* arg_str)
         printf("Erro no argumento <pid> no caractere: %c\n", *endptr);
         return -1;
     }    
+    return 0;
 }
 
 int pega_arg_sig(int* p_sig, char* arg_str) 
@@ -24,6 +25,7 @@ int pega_arg_sig(int* p_sig, char* arg_str)
         printf("Erro no argumento <sig> no caractere: %c\n", *endptr);
         return -1;
     }    
+    return 0;
 }
 
 int main(int argc, char** argv)
