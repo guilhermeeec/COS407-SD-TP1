@@ -67,7 +67,7 @@ int main(int argc, char const *argv[])
             return 0;
         }
 
-        if(checkPrime(numero_recebido) == PRIME) 
+        if(checar_primo(numero_recebido) == PRIMO) 
             snprintf(resposta, TAMANHO_RESPOSTA, "Eh primo");
         else
             snprintf(resposta, TAMANHO_RESPOSTA, "Nao eh primo");

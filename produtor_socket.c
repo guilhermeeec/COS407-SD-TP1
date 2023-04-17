@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
     printf("Conexao efetuada\n");
     
     for(int indice_numero = 0; indice_numero < QNT_NUMEROS; indice_numero++) {
-        ultimo_numero = genNumber(ultimo_numero);
+        ultimo_numero = gerar_numero(ultimo_numero);
         snprintf(numero, NUM_BYTES, "%d", ultimo_numero);
 
         send(sock, numero, NUM_BYTES, 0);

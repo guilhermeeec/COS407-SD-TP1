@@ -5,11 +5,11 @@
 #include <stdlib.h>
 
 #define NUM_BYTES   20
-#define PRIME       1
-#define NOT_PRIME   2
+#define PRIMO       1
+#define NOT_PRIMO   2
 
-int checkPrime(int number);
+int checar_primo(int numero);
 
-int genNumber(int lastNumber);
+int gerar_numero(int ultimo_numero);
 
 #endif

@@ -3,56 +3,60 @@
 #include <string.h>
 #include "utils.h"
 
-void consumidor(int readEnd) {
-    FILE *read;
-    char number[NUM_BYTES];
-    size_t totalRead;
+#define QNT_NUMEROS 5
 
-    read = fdopen(readEnd, "r");
-    if (!read) {
+void consumidor(int descritor_leitura) {
+    FILE *leitura;
+    char numero[NUM_BYTES];
+    size_t total_lido;
+
+    leitura = fdopen(descritor_leitura, "r");
+    if (!leitura) {
         printf("Erro ao abrir a leitura do Pipe.\n");
         exit(EXIT_FAILURE);
     }
-    while((totalRead = fread(number, NUM_BYTES, 1, read) > 0)) { 
-        if (totalRead != 1) {
+    while((total_lido = fread(numero, NUM_BYTES, 1, leitura) > 0)) { 
+        if (total_lido != 1) {
             printf("Erro ao ler do Pipe.\n");
             exit(EXIT_FAILURE);
         }
-        if (!(strcmp(number, "0"))) {
+        if (!(strcmp(numero, "0"))) {
             exit(EXIT_SUCCESS);
-        } else if (checkPrime(atoi(number)) == PRIME) {
-            printf("%s é Primo.\n", number);
+        } else if (checar_primo(atoi(numero)) == PRIMO) {
+            printf("%s é Primo.\n", numero);
         } else {
-            printf("%s não é Primo.\n", number);
+            printf("%s não é Primo.\n", numero);
         }
     }
 }
 
-void produtor(int writeEnd, int qntOfNum) {
-    FILE *write;
-    char number[NUM_BYTES];
-    size_t totalWritten;
-    int lastNumber = 0;
+void produtor(int descritor_escrita, int qnt_de_num) {
+    FILE *leitura;
+    char numero[NUM_BYTES];
+    size_t total_escrito;
+    int ultimo_numero = 0;
 
-    write = fdopen(writeEnd, "w");
-    if (!write) {
+    leitura = fdopen(descritor_escrita, "w");
+    if (!leitura) {
         printf("Erro ao abrir a escrita do Pipe.\n");
         exit(EXIT_FAILURE);
     }
-    sprintf(number, "%d", genNumber(lastNumber));
-    while (qntOfNum > 0) {
-        totalWritten = fwrite(number, NUM_BYTES, 1, write);
-        if (totalWritten != 1) {
+
+    srand(time(NULL));
+    sprintf(numero, "%d", gerar_numero(ultimo_numero));
+    while (qnt_de_num > 0) {
+        total_escrito = fwrite(numero, NUM_BYTES, 1, leitura);
+        if (total_escrito != 1) {
             printf("Erro ao escrever no Pipe.\n");
             exit(EXIT_FAILURE);
         }
-        lastNumber += atoi(number);
-        sprintf(number, "%d", genNumber(lastNumber));
-        qntOfNum--;
+        ultimo_numero += atoi(numero);
+        sprintf(numero, "%d", gerar_numero(ultimo_numero));
+        qnt_de_num--;
     }
-    strncpy(number, "0", NUM_BYTES);
-    totalWritten = fwrite(number, NUM_BYTES, 1, write);
-    if (totalWritten != 1) {
+    strncpy(numero, "0", NUM_BYTES);
+    total_escrito = fwrite(numero, NUM_BYTES, 1, leitura);
+    if (total_escrito != 1) {
         printf("Erro ao escrever no Pipe.\n");
         exit(EXIT_FAILURE);
     }
@@ -63,9 +67,8 @@ void produtor(int writeEnd, int qntOfNum) {
 int main() {
     int pid;
     int pipeT1[2];
-    int qntOfNum = 5;
 
-    if (pipe(pipeT1)) {
+    if (pipe(pipeT1)) { // Criar o Pipe
         printf("Erro ao Criar o Pipe.\n");
         exit(EXIT_FAILURE);
     }
@@ -73,13 +76,13 @@ int main() {
     if (pid < 0) {
         printf("Erro ao Fazer o Fork.\n");
         exit(EXIT_FAILURE);
-    } else if (pid == 0) {
+    } else if (pid == 0) { // Processo Consumidor
         close(pipeT1[1]);
         consumidor(pipeT1[0]);
         exit(EXIT_SUCCESS);
-    } else {
+    } else {               // Processo Produtor
         close(pipeT1[0]);
-        produtor(pipeT1[1], qntOfNum);
+        produtor(pipeT1[1], QNT_NUMEROS);
         exit(EXIT_SUCCESS);
     }
 }
