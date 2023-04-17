@@ -31,5 +31,5 @@ consumidor_socket: consumidor_socket.c utils.o
 	$(CC) $(CFLAGS) consumidor_socket.o utils.o -o consumidor_socket
 
 clean:
-	rm -f signal_tx signal_rx pipe utils produtor_socket consumidor_socket 
-	rm -f signal_tx.o signal_rx.o pipe utils.o produtor_socket.o consumidor_socket.o utils.o
+	rm -f signal_tx signal_rx pipes-T1 utils produtor_socket consumidor_socket 
+	rm -f signal_tx.o signal_rx.o pipes-T1.o utils.o produtor_socket.o consumidor_socket.o utils.o
