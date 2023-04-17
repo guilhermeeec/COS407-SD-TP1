@@ -1,35 +1,25 @@
 CC = gcc
 CFLAGS = -Wall
 
-signals: signal_tx signal_rx
-pipe: pipes-T1 utils.o 
-sockets: produtor_socket consumidor_socket utils.o
+SIGNALS_SRCS = signal_tx.c signal_rx.c
+PIPES_SRCS = pipes.c utils.c
+SOCKETS_SRCS = produtor_socket.c consumidor_socket.c utils.c
 
-all: signals pipe sockets
+all: signals pipes sockets
 
-signal_tx: signal_tx.c
-	$(CC) $(CFLAGS) -c signal_tx.c -o signal_tx.o
-	$(CC) $(CFLAGS) signal_tx.c -o signal_tx.o
+signals: $(SIGNALS_SRCS:.c=.o)
+	$(CC) -o signal_tx signal_tx.o
+	$(CC) -o signal_rx signal_rx.o
 
-signal_rx: signal_rx.c
-	$(CC) $(CFLAGS) -c signal_rx.c -o signal_rx.o
-	$(CC) $(CFLAGS) signal_rx.c -o signal_rx.o
+pipes: $(PIPES_SRCS:.c=.o)
+	$(CC) -o pipes $(PIPES_SRCS:.c=.o)
 
-pipes-T1: pipes-T1.c utils.o
-	$(CC) $(CFLAGS) -c pipes-T1.c -o pipes-T1.o
-	$(CC) $(CFLAGS) pipes-T1.o utils.o -o pipes-T1
+sockets: $(SOCKETS_SRCS:.c=.o)
+	$(CC) -o produtor_socket produtor_socket.o utils.o
+	$(CC) -o consumidor_socket consumidor_socket.o utils.o
 
-utils.o: utils.c
-	$(CC) $(CFLAGS) -c utils.c -o utils.o
-
-produtor_socket: produtor_socket.c utils.o
-	$(CC) $(CFLAGS) -c produtor_socket.c -o produtor_socket.o
-	$(CC) $(CFLAGS) produtor_socket.o utils.o -o produtor_socket
-
-consumidor_socket: consumidor_socket.c utils.o
-	$(CC) $(CFLAGS) -c consumidor_socket.c -o consumidor_socket.o
-	$(CC) $(CFLAGS) consumidor_socket.o utils.o -o consumidor_socket
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f signal_tx signal_rx pipes-T1 utils produtor_socket consumidor_socket 
-	rm -f signal_tx.o signal_rx.o pipes-T1.o utils.o produtor_socket.o consumidor_socket.o utils.o
+	rm -f signal_tx signal_rx pipes produtor_socket consumidor_socket $(wildcard *.o)
