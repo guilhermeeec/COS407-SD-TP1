@@ -4,7 +4,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include "utils.c"
+#include "utils.h"
 
 #define PORTA 8080
 #define IP "127.0.0.1"
@@ -15,7 +15,6 @@ int main(int argc, char const *argv[])
 {
     char numero[NUM_BYTES] = {'\0'};
     char resposta[TAMANHO_RESPOSTA] = {'\0'};
-    int indice_numero = QNT_NUMEROS;
     int ultimo_numero = 0;
     int sock = 0;
     struct sockaddr_in serv_addr;

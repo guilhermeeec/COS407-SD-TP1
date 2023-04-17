@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "utils.c"
+#include "utils.h"
 
 void consumidor(int readEnd) {
     FILE *read;
@@ -13,7 +13,7 @@ void consumidor(int readEnd) {
         printf("Erro ao abrir a leitura do Pipe.\n");
         exit(EXIT_FAILURE);
     }
-    while(totalRead = fread(number, NUM_BYTES, 1, read) > 0) { 
+    while((totalRead = fread(number, NUM_BYTES, 1, read) > 0)) { 
         if (totalRead != 1) {
             printf("Erro ao ler do Pipe.\n");
             exit(EXIT_FAILURE);

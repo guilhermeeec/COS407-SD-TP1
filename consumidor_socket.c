@@ -4,7 +4,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include "utils.c"
+#include "utils.h"
 
 #define PORT 8080
 #define TAMANHO_RESPOSTA 16

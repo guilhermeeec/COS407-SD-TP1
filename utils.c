@@ -1,9 +1,6 @@
 #include <time.h>
 #include <stdlib.h>
-
-#define NUM_BYTES   20
-#define PRIME       1
-#define NOT_PRIME   2
+#include "utils.h"
 
 int checkPrime(int number) {
     if (number == 1) {
